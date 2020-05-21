@@ -1,0 +1,96 @@
+TimeUnit是java.util.concurrent包下面的一个类，表示给定单元粒度的时间段
+
+1、主要作用
+
+   时间颗粒度转换
+
+   延时
+
+2、常用的颗粒度
+
+TimeUnit.DAYS          //天  
+TimeUnit.HOURS         //小时  
+TimeUnit.MINUTES       //分钟  
+TimeUnit.SECONDS       //秒  
+TimeUnit.MILLISECONDS  //毫秒 
+TimeUnit.NANOSECONDS   //毫微秒
+TimeUnit.MICROSECONDS  //微秒
+
+3、时间颗粒度转换
+public long toMillis(long d)    //转化成毫秒  
+public long toSeconds(long d)  //转化成秒  
+public long toMinutes(long d)  //转化成分钟  
+public long toHours(long d)    //转化成小时  
+public long toDays(long d)     //转化天
+
+
+-- 查看所有的数据库
+show databases;
+-- 使用特定的数据库
+use database_name;
+-- 查看所有的measurement
+show measurements;
+-- 查询10条数据
+select * from measurement_name limit 10;
+-- 数据中的时间字段默认显示的是一个纳秒时间戳，改成可读格式
+precision rfc3339; -- 之后再查询，时间就是rfc3339标准格式
+-- 或可以在连接数据库的时候，直接带该参数
+influx -precision rfc3339
+-- 查看一个measurement中所有的tag key 
+show tag keys
+-- 查看一个measurement中所有的field key 
+show field keys
+-- 查看一个measurement中所有的保存策略(可以有多个，一个标识为default)
+show retention policies; 
+
+#tag key只允许最多有10w个tag values，如果超过了10w个就会出现如上的错误
+
+数据格式
+	/*
+	 * 总数
+	 * {
+	"results": [{
+		"series": [{
+			"name": "point_collect_data",
+			"tags": null,
+			"columns": ["time", "count_value"],
+			"values": [
+				["1970-01-01T08:00:00+08:00", 5020.0]
+			]
+		}],
+		"error": null
+	}],
+	"error": null
+}
+	 */
+	/* 列表
+	 * {
+	"results": [{
+		"series": [{
+			"name": "point_collect_data",
+			"tags": null,
+			"columns": ["time", "status", "tags", "value"],
+			"values": [
+				["2020-05-19T14:53:45.99+08:00", "lowwarn", "tags1", "value4996"],
+				["2020-05-19T14:53:45.988+08:00", "lowwarn", "tags0", "value4995"],
+				["2020-05-19T14:53:45.986+08:00", "lowwarn", "tags2", "value4994"],
+				["2020-05-19T14:53:45.984+08:00", "lowwarn", "tags1", "value4993"]
+			]
+		}],
+		"error": null
+	}],
+	"error": null
+}
+	 */
+	 
+	 # 路径：/usr/bin
+influxd            # influxdb服务器
+influx             # influxdb命令行客户端
+influx_inspect     # 查看工具
+influx_stress      # 压力测试工具
+influx_tsm         # 数据库转换工具（将数据库从b1或bz1格式转换为tsm1格式）
+
+# 路径：/var/lib/influxdb/
+data               # 存放最终存储的数据，文件以.tsm结尾
+meta               # 存放数据库元数据
+wal                # 存放预写日志文件
